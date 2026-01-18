@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Attendance Management System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+/* BACKGROUND */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+
+    background-image: url(https://qs-igauge.blr1.cdn.digitaloceanspaces.com/Campus%201.png); /* your image */
+    background-repeat: no-repeat;         /* 🔴 stops repeat */
+    background-size: cover;               /* 🔴 fits screen */
+    background-position: center;           /* 🔴 center image */
+    background-attachment: fixed;          /* optional (nice effect) */
+}
+
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+}
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:rgb(223, 243, 41);
+}
+.logo span{color:rgb(223, 243, 41);}
+.navbar ul{
+    list-style:none;
+    display:flex;
+}
+.navbar ul li{
+    margin:0 15px;
+}
+.navbar ul li a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* MAIN LOGIN PAGE */
+.main{
+    display:flex;
+    justify-content:space-between;
+    padding:70px 60px;
+}
+.content{
+    width:55%;
+}
+.content h1{
+    font-size:42px;
+    line-height:1.3;
+}
+.content span{color:rgb(24, 23, 23);}
+.content p{
+    margin:20px 0;
+    line-height:1.6;
+}
+.btn{
+    padding:10px 25px;
+    background:orange;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* LOGIN BOX */
+.login-box{
+    width:330px;
+    background:rgba(0,0,0,0.85);
+    padding:25px;
+    border-radius:10px;
+}
+.login-box h2{
+    background:white;
+    color:black;
+    text-align:center;
+    padding:8px;
+    margin-bottom:15px;
+    border-radius:5px;
+}
+.login-box select,
+.login-box input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid orange;
+    color:rgb(14, 161, 187);
+    outline:none;
+}
+.login-btn{
+    width:100%;
+    padding:10px;
+    background:orange;
+    border:none;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+/* DASHBOARD */
+.dashboard{
+    display:none;
+    padding:40px;
+}
+.box{
+    background:white;
+    color:black;
+    width:400px;
+    margin:80px auto;
+    padding:30px;
+    border-radius:10px;
+    text-align:center;
+}
+.box h2{
+    margin-bottom:15px;
+}
+.box button{
+    width:90%;
+    padding:10px;
+    margin:8px 0;
+    background:#ff9800;
+    border:none;
+    cursor:pointer;
+    color:black;
+    font-size:15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">ATTENDENCE<span>PORTAL</span></div>
+    <ul>
+        <li><a href="#">HOME</a></li>
+        <li><a href="#">STUDENT</a></li>
+        <li><a href="#">FACULTY</a></li>
+        <li><a href="#">CONTACT</a></li>
+    </ul>
+</div>
+
+<!-- LOGIN PAGE -->
+<div class="main" id="loginPage">
+
+    <div class="content">
+        <h1>
+            Attendance<br>
+            <span>Management System</span>
+        </h1>
+        <button class="btn">Learn More</button>
+    </div>
+
+    <div class="login-box">
+        <h2>Login Here</h2>
+
+        <select id="role">
+            <option value="">Select Role</option>
+            <option value="student">Student</option>
+            <option value="faculty">Faculty</option>
+        </select>
+
+        <input type="text" id="username" placeholder="Enter ID / Username">
+        <input type="text" id="otp" placeholder="Enter OTP">
+
+        <button class="login-btn" onclick="generateOTP()">Generate OTP</button>
+        <button class="login-btn" onclick="login()">Login</button>
+    </div>
+
+</div>
+
+<!-- STUDENT DASHBOARD -->
+<div class="dashboard" id="studentDash">
+    <div class="box">
+        <h2>Student Dashboard</h2>
+        <button>View Attendance</button>
+        <button>View Subjects</button>
+        <button>Profile</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- FACULTY DASHBOARD -->
+<div class="dashboard" id="facultyDash">
+    <div class="box">
+        <h2>Faculty Dashboard</h2>
+        <button>Mark Attendance</button>
+        <button>Attendance Report</button>
+        <button>Manage Students</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script>
+let generatedOTP = "";
+
+// Generate OTP
+function generateOTP(){
+    let user = document.getElementById("username").value;
+    if(user === ""){
+        alert("Please enter Username / ID");
+        return;
+    }
+    generatedOTP = Math.floor(1000 + Math.random() * 9000);
+    alert("OTP sent to registered mobile\nOTP: " + generatedOTP);
+}
+
+// Login
+function login(){
+    let role = document.getElementById("role").value;
+    let otp = document.getElementById("otp").value;
+
+    if(role === ""){
+        alert("Please select role");
+        return;
+    }
+
+    if(otp == generatedOTP){
+        document.getElementById("loginPage").style.display="none";
+        if(role === "student"){
+            document.getElementById("studentDash").style.display="block";
+        }else{
+            document.getElementById("facultyDash").style.display="block";
+        }
+    }else{
+        alert("Invalid OTP");
+    }
+}
+
+// Logout
+function logout(){
+    location.reload();
+}
+</script>
+
+</body>
+</html>
